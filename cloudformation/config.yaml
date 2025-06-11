@@ -22,14 +22,8 @@ Resources:
           systemctl start awslogsd
           systemctl enable awslogsd
           git clone https://github.com/adibhosn/AWS-CloudFormation.git
-          cd app
-          python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. greeter.proto
-          cd ../
           cd docker
           docker-compose up --build
-          de ../
-          cd app
-          python3 server.py
 
 
   InstanceSecurityGroup:
