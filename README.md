@@ -10,7 +10,7 @@
 ## Como Rodar Local
 
 ```bash
-# Inicializar Docker
+# Inicializar servidor 
 docker-compose up --build
 
 # Em outro terminal Testar gRPC
