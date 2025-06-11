@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Instância EC2 com Docker
+
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-02457590d33d576c3 # Substitua pela AMI correta da sua região, se necessário
+      KeyName: cloudformation         # Substitua pelo nome da sua key pair existente
+      SecurityGroups:
+        - !Ref InstanceSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          yum update -y
+          amazon-linux-extras install docker -y
+          service docker start
+          usermod -a -G docker ec2-user
+          systemctl enable docker
+          yum install -y awslogs
+          systemctl start awslogsd
+          systemctl enable awslogsd
+          git clone https://github.com/adibhosn/AWS-CloudFormation.git
+          cd app
+          python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. greeter.proto
+          cd ../
+          cd docker
+          docker-compose up --build
+          de ../
+          cd app
+          python3 server.py
+
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Permitir acesso HTTP e SSH
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0

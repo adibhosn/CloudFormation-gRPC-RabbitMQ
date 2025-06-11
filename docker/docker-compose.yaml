@@ -1,0 +1,15 @@
+version: '3'
+services:
+  grpc_server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "50051:50051"
+    working_dir: /app
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
