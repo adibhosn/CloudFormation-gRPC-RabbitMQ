@@ -21,7 +21,7 @@ Resources:
           yum install -y awslogs
           systemctl start awslogsd
           systemctl enable awslogsd
-          git clone https://github.com/adibhosn/AWS-CloudFormation.git
+          git clone https://github.com/adibhosn/CloudFormation-gRPC-RabbitMQ.git
           cd docker
           docker-compose up --build
 
